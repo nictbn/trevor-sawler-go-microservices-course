@@ -37,21 +37,19 @@ func main() {
 		if err = client.Disconnect(ctx); err != nil {
 			panic(err)
 		}
-		app := Config{
-			Models: data.New(client),
-		}
-		go app.serve()
 	}()
-}
 
-func (app *Config) serve() {
+	app := Config{
+		Models: data.New(client),
+	}
+	log.Println("Starting service on port", webPort)
 	server := &http.Server{
 		Addr:    fmt.Sprintf(":%s", webPort),
 		Handler: app.routes(),
 	}
-	err := server.ListenAndServe()
+	err = server.ListenAndServe()
 	if err != nil {
-		log.Panic()
+		log.Panic(err)
 	}
 }
 
@@ -66,5 +64,6 @@ func connectToMongo() (*mongo.Client, error) {
 		log.Println("Error connecting: ", err)
 		return nil, err
 	}
+	log.Println("Connected to mongo!")
 	return c, nil
 }
