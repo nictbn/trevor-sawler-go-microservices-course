@@ -3,3 +3,6 @@ postgres/**
 
 mongo/**
 !mongo/
+
+rabbitmq/**
+!rabbitmq/
