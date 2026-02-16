@@ -2,10 +2,6 @@ version: '3'
 services:
   broker-service:
     image: project-broker-service:latest
-    ports:
-      - target: 80
-        published: 8080
-        mode: host
     deploy:
       mode: replicated
       replicas: 1
