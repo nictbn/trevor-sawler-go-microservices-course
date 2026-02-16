@@ -1,5 +1,29 @@
 version: '3'
 services:
+  caddy:
+    image: micro-caddy:latest
+    deploy:
+      mode: replicated
+      replicas: 1
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - caddy_data:/data
+      - caddy_config:/config
+
+  front-end:
+    image: project-front-end:latest
+    deploy:
+      mode: replicated
+      replicas: 1
+    ports:
+      - target: 8082
+        published: 8082
+        mode: host
+    environment:
+      BROKER_URL: "http://backend"
+    
   broker-service:
     image: project-broker-service:latest
     deploy:
@@ -85,3 +109,8 @@ services:
       POSTGRES_DB: users
     volumes:
       - ./db-data/postgres/:/var/lib/postgresql/data/
+
+volumes:
+  caddy_data:
+    external: true
+  caddy_config:
