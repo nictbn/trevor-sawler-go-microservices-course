@@ -3,7 +3,9 @@ services:
   broker-service:
     image: project-broker-service:latest
     ports:
-      - "8080:80"
+      - target: 80
+        published: 8080
+        mode: host
     deploy:
       mode: replicated
       replicas: 1
@@ -49,16 +51,20 @@ services:
       mode: global
   
   mailhog:
-    image: 'mailhog/nailhog:latest'
+    image: 'mailhog/mailhog:latest'
     ports:
-      - "8025:8025"
+      - target: 8025
+        published: 8025
+        mode: host
     deploy:
       mode: global
   
   mongo:
     image: 'mongo:4.2.17-bionic'
     ports:
-      - "27017:27017"
+      - target: 27017
+        published: 27017
+        mode: host
     deploy:
       mode: global
     environment:
@@ -71,8 +77,9 @@ services:
   postgres:
     image: 'postgres:14.2'
     ports:
-      - "5432:5432"
-    restart: always
+      - target: 5432
+        published: 5432
+        mode: host
     deploy:
       mode: replicated
       replicas: 1
