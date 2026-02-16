@@ -1,7 +1,7 @@
 version: '3'
 services:
   caddy:
-    image: micro-caddy:latest
+    image: project-caddy:latest
     deploy:
       mode: replicated
       replicas: 1
