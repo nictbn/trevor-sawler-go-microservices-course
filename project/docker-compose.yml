@@ -18,8 +18,6 @@ services:
       context: ./../front-end
       dockerfile: ./../front-end/front-end.dockerfile
     restart: always
-    ports:
-      - "8082:8082"
     deploy:
       mode: replicated
       replicas: 1
@@ -31,8 +29,6 @@ services:
       context: ./../broker-service
       dockerfile: ./../broker-service/broker-service.dockerfile
     restart: always
-    ports:
-      - "8080:8080"
     deploy:
       mode: replicated
       replicas: 1
