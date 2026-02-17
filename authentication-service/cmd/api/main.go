@@ -19,8 +19,8 @@ const webPort = "80"
 var counts int64
 
 type Config struct {
-	DB     *sql.DB
-	Models data.Models
+	Repo   data.Repository
+	Client *http.Client
 }
 
 func main() {
@@ -32,9 +32,9 @@ func main() {
 	}
 
 	app := Config{
-		DB:     conn,
-		Models: data.New(conn),
+		Client: &http.Client{},
 	}
+	app.setupRepo(conn)
 	server := &http.Server{
 		Addr:    fmt.Sprintf(":%s", webPort),
 		Handler: app.routes(),
@@ -76,4 +76,9 @@ func connectToTb() *sql.DB {
 		log.Println("Backing off for two seconds...")
 		time.Sleep(2 * time.Second)
 	}
+}
+
+func (app *Config) setupRepo(conn *sql.DB) {
+	db := data.NewPostgresRepository(conn)
+	app.Repo = db
 }
